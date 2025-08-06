@@ -19,6 +19,8 @@ In this stage, you should also set the Fermi energy, file name, spin component, 
 - nkx,nky: number of kx/ky division
 - kcx,kcy: center position of kx/ky in the unit of reciprocal lattice vector
 - kxmax,kymax: maximum of kx/ky from center in the unit of reciprocal lattice vector, the k-range will be (kxc-kxmax,kxc+kxmax), etc.
+- kcxp,kcyp: kcx/kcy for plotting
+- kxmp,kymp: kxmax/kymax for plotting
 - ef: the Fermi energy in scf in eV
 - ef_shift: shift of the Fermi energy in eV
 - fn: output file name

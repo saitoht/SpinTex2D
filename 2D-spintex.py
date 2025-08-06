@@ -8,6 +8,8 @@ nbnds=120
 nkx,nky=21,21
 kcx,kcy=0.,0.
 kxmax,kymax=0.05,0.05
+kcxp,kcyp=kcx,kcy
+kxmp,kymp=kxmax,kymax
 ef=-1.1234
 ef_shift=0.87
 fn='sbp.dat'
@@ -79,11 +81,14 @@ def read_eigs(fn,nbnds,nkx,nky,code='qe'):
     print(eig)
     return eig
                 
-def plt_2Dfs(kx,ky,eig,sx,sy,sz,nbnds,ef=0.,efsh=0.,kz=0.,kcx=0.,kcy=0.,kxmax=0.02,kymax=0.02,sd='z',
+def plt_2Dfs(kx,ky,eig,sx,sy,sz,nbnds,ef=0.,efsh=0.,kz=0.,kcx=0.,kcy=0.,
+             kxmax=0.02,kymax=0.02,sd='z',kcxp=0.,kcyp=0.,kxmp=0.02,kymp=0.02,
              plt_2Dfermi=False,plt_arrow=False,plt_spol=False,filename='SpinTex-2D.png',tol=1e-3,nd=501):
     plt.figure(figsize=(8,6))
     plt.xlabel(r'$k_x$')
     plt.ylabel(r'$k_y$')
+    plt.xlim(kcxp-kxmp,kcxp+kxmp)
+    plt.ylim(kcyp-kymp,kcyp+kymp)
     plotted = False  # Flag to track if anything was plotted
     for i in range(nbnds):
         if eig[:, :, i].max() < ef + efsh or eig[:, :, i].min() > ef + efsh:
@@ -156,6 +161,7 @@ if __name__=='__main__':
             plt_2Dfs(kx, ky, eig, sx, sy, sz, nbnds, 
                      ef=ef, efsh=ef_shift, kz=0.,
                      kcx=kcx,kcy=kcy,kxmax=kxmax,kymax=kymax,
+                     kcxp=kcxp,kcyp=kcyp,kxmp=kxmp,kymp=kymp,
                      sd=spin_direction,
                      plt_2Dfermi=plt_2Dfermi,
                      plt_arrow=plt_arrow,
@@ -165,6 +171,7 @@ if __name__=='__main__':
         plt_2Dfs(kx,ky,eig,sx,sy,sz,nbnds,
                  ef=ef,efsh=ef_shift,
                  kz=0.,kcx=kcx,kcy=kcy,kxmax=kxmax,kymax=kymax,
+                 kcxp=kcxp,kcyp=kcyp,kxmp=kxmp,kymp=kymp,
                  sd=spin_direction,
                  plt_2Dfermi=plt_2Dfermi,
                  plt_arrow=plt_arrow,
