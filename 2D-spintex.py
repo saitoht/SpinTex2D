@@ -80,7 +80,7 @@ def read_eigs(fn,nbnds,nkx,nky,code='qe'):
     return eig
                 
 def plt_2Dfs(kx,ky,eig,sx,sy,sz,nbnds,ef=0.,efsh=0.,kz=0.,kcx=0.,kcy=0.,kxmax=0.02,kymax=0.02,sd='z',
-             plt_2Dfermi=False,plt_arrow=False,plt_spol=False,filename=None,tol=1e-3,nd=501):
+             plt_2Dfermi=False,plt_arrow=False,plt_spol=False,filename='SpinTex-2D.png',tol=1e-3,nd=501):
     plt.figure(figsize=(8,6))
     plt.xlabel(r'$k_x$')
     plt.ylabel(r'$k_y$')
@@ -139,6 +139,8 @@ def plt_2Dfs(kx,ky,eig,sx,sy,sz,nbnds,ef=0.,efsh=0.,kz=0.,kcx=0.,kcy=0.,kxmax=0.
     plt.close()
     
 if __name__=='__main__':
+    print("nkx,nky,kcx,kcy,kxmax,kymax")
+    print(nkx,nky,kcx,kcy,kxmax,kymax)
     kx,ky=mk_kgrid(nkx,nky,kcx=kcx,kcy=kcy,kxmax=kxmax,kymax=kymax)
     if not (plt_2Dfermi or plt_arrow or  plt_spol):
         sys.exit()
