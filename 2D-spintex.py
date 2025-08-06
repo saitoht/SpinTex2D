@@ -5,8 +5,8 @@ from scipy import interpolate
 import math,sys,os,pathlib
 
 nbnds=120
-nkx,nky=71,71
-kxc,kyc=0.,0.
+nkx,nky=21,21
+kcx,kcy=0.,0.
 kxmax,kymax=0.05,0.05
 ef=-1.1234
 ef_shift=0.87
@@ -15,6 +15,9 @@ spin_direction='z'
 plt_2Dfermi=True
 plt_arrow=False
 plt_spol=True
+efsfmin,efshmax=-0.13,-0.118
+ediv=0.001
+sw_search=False
 
 plt.rcParams['font.family'] = 'Times New Roman'
 plt.rcParams["xtick.labelsize"]= 15.0
@@ -35,9 +38,9 @@ plt.rcParams["ytick.major.size"] = 4.5
 plt.rcParams["xtick.minor.size"] = 3.0
 plt.rcParams["ytick.minor.size"] = 3.0
 
-def mk_kgrid(nkx,nky,kxc=0.,kyc=0.,kxmax=0.02,kymax=0.02,kz=0.,code='qe'):
-    kx=np.linspace(kxc-kxmax,kxc+kxmax,nkx)
-    ky=np.linspace(kyc-kymax,kyc+kymax,nky)
+def mk_kgrid(nkx,nky,kcx=0.,kcy=0.,kxmax=0.02,kymax=0.02,kz=0.,code='qe'):
+    kx=np.linspace(kcx-kxmax,kcx+kxmax,nkx)
+    ky=np.linspace(kcy-kymax,kcy+kymax,nky)
     if code=='qe':
         kgrids=f"{nkx*nky} \n"+"\n".join([f" {kxx}  {kyy}  {kz}  1 " for kxx in kx for kyy in ky])
         with open("Kpoints-2D.txt","w") as f:
@@ -77,7 +80,7 @@ def read_eigs(fn,nbnds,nkx,nky,code='qe'):
     return eig
                 
 def plt_2Dfs(kx,ky,eig,sx,sy,sz,nbnds,ef=0.,efsh=0.,kz=0.,kcx=0.,kcy=0.,kxmax=0.02,kymax=0.02,sd='z',
-             plt_2Dfermi=False,plt_arrow=False,plt_spol=False,tol=1e-3,nd=501):
+             plt_2Dfermi=False,plt_arrow=False,plt_spol=False,filename=None,tol=1e-3,nd=501):
     plt.figure(figsize=(8,6))
     plt.xlabel(r'$k_x$')
     plt.ylabel(r'$k_y$')
@@ -143,5 +146,24 @@ if __name__=='__main__':
     sx=read_eigs(fn+".1",nbnds,nkx,nky)
     sy=read_eigs(fn+".2",nbnds,nkx,nky)
     sz=read_eigs(fn+".3",nbnds,nkx,nky)
-    plt_2Dfs(kx,ky,eig,sx,sy,sz,nbnds,ef=ef,efsh=ef_shift,kz=0.,kcx=kcx,kcy=kcy,kxmax=kxmax,kymax=kymax,sd=spin_direction,
-             plt_2Dfermi=plt_2Dfermi,plt_arrow=plt_arrow,plt_spol=plt_spol,tol=3e-2)
+    if sw_search:
+        ef_shift_range = np.arange(efshmin,efshmax,ediv)
+        for ef_shift in ef_shift_range:
+            filename = f"SpinTexture_efsh{ef_shift:.4f}.png"
+            print(f"** Plotting for ef_shift = {ef_shift:.4f}")
+            plt_2Dfs(kx, ky, eig, sx, sy, sz, nbnds, 
+                     ef=ef, efsh=ef_shift, kz=0.,
+                     kcx=kcx,kcy=kcy,kxmax=kxmax,kymax=kymax,
+                     sd=spin_direction,
+                     plt_2Dfermi=plt_2Dfermi,
+                     plt_arrow=plt_arrow,
+                     plt_spol=plt_spol,
+                     filename=filename)
+    else:
+        plt_2Dfs(kx,ky,eig,sx,sy,sz,nbnds,
+                 ef=ef,efsh=ef_shift,
+                 kz=0.,kcx=kcx,kcy=kcy,kxmax=kxmax,kymax=kymax,
+                 sd=spin_direction,
+                 plt_2Dfermi=plt_2Dfermi,
+                 plt_arrow=plt_arrow,
+                 plt_spol=plt_spol)

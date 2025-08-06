@@ -17,7 +17,7 @@ In this stage, you should also set the Fermi energy, file name, spin component, 
 ## Input parameters
 - nbnds: number of bands
 - nkx,nky: number of kx/ky division
-- kxc,kyc: center position of kx/ky in the unit of reciprocal lattice vector
+- kcx,kcy: center position of kx/ky in the unit of reciprocal lattice vector
 - kxmax,kymax: maximum of kx/ky from center in the unit of reciprocal lattice vector, the k-range will be (kxc-kxmax,kxc+kxmax), etc.
 - ef: the Fermi energy in scf in eV
 - ef_shift: shift of the Fermi energy in eV
@@ -26,3 +26,6 @@ In this stage, you should also set the Fermi energy, file name, spin component, 
 - plt_2Dfermi: This should be True when you plot the spin texture
 - plt_arrow: plot arrows (sx,sy) in the case of spin_direction="z"
 - plt_spol: plot spin polarization values with color bar or not
+- efshmin,efshmax: min/max of ef_shift if sw_search=True
+- ediv: energy division in eV
+- sw_search: search appropriate energy level for plotting or not
